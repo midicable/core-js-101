@@ -1,3 +1,5 @@
+/* eslint-disable comma-dangle */
+/* eslint-disable no-underscore-dangle */
 /* ************************************************************************************************
  *                                                                                                *
  * Please read the following tutorial before implementing tasks:                                   *
@@ -5,7 +7,6 @@
  * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object        *
  *                                                                                                *
  ************************************************************************************************ */
-
 
 /**
  * Returns the rectangle object with width and height parameters and getArea() method
@@ -20,10 +21,16 @@
  *    console.log(r.height);      // => 20
  *    console.log(r.getArea());   // => 200
  */
-function Rectangle(/* width, height */) {
-  throw new Error('Not implemented');
-}
+function Rectangle(width, height) {
+  return {
+    width,
+    height,
 
+    getArea() {
+      return width * height;
+    },
+  };
+}
 
 /**
  * Returns the JSON representation of specified object
@@ -35,10 +42,9 @@ function Rectangle(/* width, height */) {
  *    [1,2,3]   =>  '[1,2,3]'
  *    { width: 10, height : 20 } => '{"height":10,"width":20}'
  */
-function getJSON(/* obj */) {
-  throw new Error('Not implemented');
+function getJSON(obj) {
+  return JSON.stringify(obj);
 }
-
 
 /**
  * Returns the object of specified type from JSON representation
@@ -51,10 +57,11 @@ function getJSON(/* obj */) {
  *    const r = fromJSON(Circle.prototype, '{"radius":10}');
  *
  */
-function fromJSON(/* proto, json */) {
-  throw new Error('Not implemented');
+function fromJSON(proto, json) {
+  const o = JSON.parse(json);
+  Object.setPrototypeOf(o, proto);
+  return o;
 }
-
 
 /**
  * Css selectors builder
@@ -110,36 +117,149 @@ function fromJSON(/* proto, json */) {
  *  For more examples see unit tests.
  */
 
+class Selector {
+  constructor() {
+    this._element = '';
+    this._id = '';
+    this._class = [];
+    this._attr = [];
+    this._pseudoClass = [];
+    this._pseudoElement = '';
+  }
+
+  element(value) {
+    if (this._element) {
+      throw new Error(
+        'Element, id and pseudo-element should not occur more then one time inside the selector'
+      );
+    }
+    if (
+      this._id ||
+      this._class.length ||
+      this._attr.length ||
+      this._pseudoClass.length ||
+      this._pseudoElement
+    ) {
+      throw new Error(
+        'Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element'
+      );
+    }
+    this._element = value;
+    return this;
+  }
+
+  id(value) {
+    if (this._id) {
+      throw new Error(
+        'Element, id and pseudo-element should not occur more then one time inside the selector'
+      );
+    }
+    if (
+      this._class.length ||
+      this._attr.length ||
+      this._pseudoClass.length ||
+      this._pseudoElement
+    ) {
+      throw new Error(
+        'Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element'
+      );
+    }
+    this._id = value;
+    return this;
+  }
+
+  class(value) {
+    if (this._attr.length || this._pseudoClass.length || this._pseudoElement) {
+      throw new Error(
+        'Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element'
+      );
+    }
+    this._class.push(value);
+    return this;
+  }
+
+  attr(value) {
+    if (this._pseudoClass.length || this._pseudoElement) {
+      throw new Error(
+        'Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element'
+      );
+    }
+    this._attr.push(value);
+    return this;
+  }
+
+  pseudoClass(value) {
+    if (this._pseudoElement) {
+      throw new Error(
+        'Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element'
+      );
+    }
+    this._pseudoClass.push(value);
+    return this;
+  }
+
+  pseudoElement(value) {
+    if (this._pseudoElement) {
+      throw new Error(
+        'Element, id and pseudo-element should not occur more then one time inside the selector'
+      );
+    }
+    this._pseudoElement = value;
+    return this;
+  }
+
+  stringify() {
+    const element = this._element ? this._element : '';
+    const id = this._id ? `#${this._id}` : '';
+    const classList = this._class.reduce((acc, value) => `${acc}.${value}`, '');
+    const attrList = this._attr.reduce((acc, value) => `${acc}[${value}]`, '');
+    const pseudoClassList = this._pseudoClass.reduce(
+      (acc, value) => `${acc}:${value}`,
+      ''
+    );
+    const pseudoElement = this._pseudoElement ? `::${this._pseudoElement}` : '';
+
+    return `${element}${id}${classList}${attrList}${pseudoClassList}${pseudoElement}`;
+  }
+}
+
 const cssSelectorBuilder = {
-  element(/* value */) {
-    throw new Error('Not implemented');
+  element(value) {
+    return new Selector().element(value);
   },
 
-  id(/* value */) {
-    throw new Error('Not implemented');
+  id(value) {
+    return new Selector().id(value);
   },
 
-  class(/* value */) {
-    throw new Error('Not implemented');
+  class(value) {
+    return new Selector().class(value);
   },
 
-  attr(/* value */) {
-    throw new Error('Not implemented');
+  attr(value) {
+    return new Selector().attr(value);
   },
 
-  pseudoClass(/* value */) {
-    throw new Error('Not implemented');
+  pseudoClass(value) {
+    return new Selector().pseudoClass(value);
   },
 
-  pseudoElement(/* value */) {
-    throw new Error('Not implemented');
+  pseudoElement(value) {
+    return new Selector().pseudoElement(value);
   },
 
-  combine(/* selector1, combinator, selector2 */) {
-    throw new Error('Not implemented');
+  combine(selector1, combinator, selector2) {
+    return {
+      selector1,
+      combinator,
+      selector2,
+
+      stringify() {
+        return `${selector1.stringify()} ${combinator} ${selector2.stringify()}`;
+      },
+    };
   },
 };
-
 
 module.exports = {
   Rectangle,
