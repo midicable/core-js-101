@@ -429,8 +429,35 @@ function toNaryString(num, n) {
  *   ['/web/assets/style.css', '/.bin/mocha',  '/read.me'] => '/'
  *   ['/web/favicon.ico', '/web-scripts/dump', '/verbalizer/logs'] => '/'
  */
-function getCommonDirectoryPath(/* pathes */) {
-  throw new Error('Not implemented');
+function getCommonDirectoryPath(pathes) {
+  let isMatchingPaths = true;
+  const pathesSplitted = pathes.map((path) => path.split('/'));
+  const minPathLength = Math.min(...pathesSplitted.map((path) => path.length));
+  const commonFolders = [];
+
+  while (isMatchingPaths) {
+    for (let j = 0; j < minPathLength; j += 1) {
+      for (let i = 0; i < pathes.length - 1; i += 1) {
+        if (pathesSplitted[i][j] !== pathesSplitted[i + 1][j]) {
+          isMatchingPaths = false;
+          break;
+        }
+      }
+      if (isMatchingPaths) {
+        commonFolders.push(pathesSplitted[0][j]);
+      } else {
+        break;
+      }
+    }
+  }
+
+  if (commonFolders.length === 0) {
+    return '';
+  }
+  if (commonFolders.length === 1) {
+    return commonFolders[0] === '' ? '/' : commonFolders[0];
+  }
+  return `${commonFolders.join('/')}/`;
 }
 
 /**
@@ -451,8 +478,21 @@ function getCommonDirectoryPath(/* pathes */) {
  *                         [ 6 ]]
  *
  */
-function getMatrixProduct(/* m1, m2 */) {
-  throw new Error('Not implemented');
+function getMatrixProduct(m1, m2) {
+  const m = [];
+  for (let i = 0; i < m1.length; i += 1) {
+    m.push(new Array(m2[0].length).fill(0));
+  }
+
+  for (let i = 0; i < m1.length; i += 1) {
+    for (let j = 0; j < m2[0].length; j += 1) {
+      for (let k = 0; k < m1[0].length; k += 1) {
+        m[i][j] += m1[i][k] * m2[k][j];
+      }
+    }
+  }
+
+  return m;
 }
 
 /**
@@ -485,8 +525,71 @@ function getMatrixProduct(/* m1, m2 */) {
  *    [    ,   ,    ]]
  *
  */
-function evaluateTicTacToePosition(/* position */) {
-  throw new Error('Not implemented');
+function isAllElementsEqual(array) {
+  return (
+    array.filter((element) => element === array[0]).length === array.length &&
+    array[0] !== undefined
+  );
+}
+
+function scanRows(position) {
+  for (let i = 0; i < position.length; i += 1) {
+    const currRow = position[i];
+    if (currRow.length === 3 && isAllElementsEqual(currRow)) {
+      return currRow[0];
+    }
+  }
+
+  return undefined;
+}
+
+function scanCols(position) {
+  for (let j = 0; j < position[0].length; j += 1) {
+    const currCol = [];
+    for (let i = 0; i < position.length; i += 1) {
+      currCol.push(position[i][j]);
+    }
+    if (isAllElementsEqual(currCol)) {
+      return currCol[0];
+    }
+  }
+
+  return undefined;
+}
+
+function scanMainDiag(position) {
+  const mainDiag = [];
+
+  for (let i = 0; i < position.length; i += 1) {
+    mainDiag.push(position[i][i]);
+  }
+  if (isAllElementsEqual(mainDiag)) {
+    return mainDiag[0];
+  }
+
+  return undefined;
+}
+
+function scanSecondaryDiag(position) {
+  const secondaryDiag = [];
+
+  for (let i = 0; i < position.length; i += 1) {
+    secondaryDiag.push(position[i][position[0].length - 1 - i]);
+  }
+  if (isAllElementsEqual(secondaryDiag)) {
+    return secondaryDiag[0];
+  }
+
+  return undefined;
+}
+
+function evaluateTicTacToePosition(position) {
+  return (
+    scanCols(position) ||
+    scanRows(position) ||
+    scanMainDiag(position) ||
+    scanSecondaryDiag(position)
+  );
 }
 
 module.exports = {
