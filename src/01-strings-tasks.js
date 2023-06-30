@@ -5,7 +5,6 @@
  *                                                                                           *
  ******************************************************************************************* */
 
-
 /**
  * Returns the result of concatenation of two strings.
  *
@@ -21,7 +20,6 @@
 function concatenateStrings(value1, value2) {
   return value1 + value2;
 }
-
 
 /**
  * Returns the length of given string.
@@ -52,7 +50,7 @@ function getStringLength(value) {
  *   'Chuck','Norris'  => 'Hello, Chuck Norris!'
  */
 function getStringFromTemplate(firstName, lastName) {
-  return `Hello, ${firstName} ${lastName}!`
+  return `Hello, ${firstName} ${lastName}!`;
 }
 
 /**
@@ -69,7 +67,6 @@ function extractNameFromTemplate(value) {
   const regex = new RegExp('Hello, (.*)!');
   return value.match(regex)[1];
 }
-
 
 /**
  * Returns a first char of the given string.
@@ -113,7 +110,7 @@ function removeLeadingAndTrailingWhitespaces(value) {
  */
 function repeatString(value, count) {
   let accumulator = '';
-  for (let i = 0; i < count; i++) {
+  for (let i = 0; i < count; i += 1) {
     accumulator += value;
   }
   return accumulator;
@@ -132,7 +129,7 @@ function repeatString(value, count) {
  *   'ABABAB','BA' => 'ABAB'
  */
 function removeFirstOccurrences(str, value) {
-  return str.replace(value, ''); 
+  return str.replace(value, '');
 }
 
 /**
@@ -150,7 +147,6 @@ function unbracketTag(str) {
   const tagRegex = new RegExp('<(.*)>');
   return str.match(tagRegex)[1];
 }
-
 
 /**
  * Converts all characters of the specified string into the upper case
@@ -209,32 +205,32 @@ function extractEmails(str) {
  *
  */
 
-const drawRectangleTop = function (width) {
+function drawRectangleTop(width) {
   let rectangleTop = '┌';
-  for (let i = 0; i < width - 2; i++) {
+  for (let i = 0; i < width - 2; i += 1) {
     rectangleTop += '─';
   }
-  rectangleTop += '┐\n'
+  rectangleTop += '┐\n';
 
   return rectangleTop;
-};
+}
 
-const drawRectangleBottom = function (width) {
+function drawRectangleBottom(width) {
   let rectangleBottom = '└';
-  for (let i = 0; i < width - 2; i++) {
+  for (let i = 0; i < width - 2; i += 1) {
     rectangleBottom += '─';
   }
-  rectangleBottom += '┘\n'  
+  rectangleBottom += '┘\n';
 
   return rectangleBottom;
-};
+}
 
-const drawRectangleMid = function (width) {
+function drawRectangleMid(width) {
   let rectangleMiddle = '│';
-  for (let i = 0; i < width - 2; i++) {
+  for (let i = 0; i < width - 2; i += 1) {
     rectangleMiddle += ' ';
   }
-  rectangleMiddle += '│\n'  
+  rectangleMiddle += '│\n';
 
   return rectangleMiddle;
 }
@@ -242,14 +238,13 @@ const drawRectangleMid = function (width) {
 function getRectangleString(width, height) {
   let rectangle = '';
   rectangle += drawRectangleTop(width);
-  for (let i = 0; i < height - 2; i++) {
+  for (let i = 0; i < height - 2; i += 1) {
     rectangle += drawRectangleMid(width);
   }
   rectangle += drawRectangleBottom(width);
 
   return rectangle;
 }
-
 
 /**
  * Encode specified string with ROT13 cipher
@@ -272,19 +267,17 @@ function encodeToRot13(str) {
   const uppercaseAlphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   let encodedStr = '';
 
-  for (let char of str) {
-    if (!lowercaseAlphabet.includes(char.toLocaleLowerCase())) {
-      encodedStr += char;
+  for (let i = 0; i < str.length; i += 1) {
+    if (!lowercaseAlphabet.includes(str[i].toLocaleLowerCase())) {
+      encodedStr += str[i];
+    } else if (str[i] !== str[i].toUpperCase()) {
+      const charIndex = lowercaseAlphabet.indexOf(str[i]);
+      const encodedCharIndex = (charIndex + 13) % 26;
+      encodedStr += lowercaseAlphabet[encodedCharIndex];
     } else {
-      if (char !== char.toUpperCase()) {
-        let charIndex = lowercaseAlphabet.indexOf(char);
-        let encodedCharIndex = (charIndex + 13) % 26;
-        encodedStr += lowercaseAlphabet[encodedCharIndex];
-      } else {
-        let charIndex = uppercaseAlphabet.indexOf(char);
-        let encodedCharIndex = (charIndex + 13) % 26;
-        encodedStr += uppercaseAlphabet[encodedCharIndex];
-      }
+      const charIndex = uppercaseAlphabet.indexOf(str[i]);
+      const encodedCharIndex = (charIndex + 13) % 26;
+      encodedStr += uppercaseAlphabet[encodedCharIndex];
     }
   }
 
@@ -305,9 +298,8 @@ function encodeToRot13(str) {
  *   isString(new String('test')) => true
  */
 function isString(value) {
-  return typeof value == 'string' || value instanceof String;
+  return typeof value === 'string' || value instanceof String;
 }
-
 
 /**
  * Returns playid card id.
@@ -334,28 +326,36 @@ function isString(value) {
  *   'K♠' => 51
  */
 function getCardId(value) {
-  numberWeight = {
-    'A': 0, '2': 1, '3': 2,
-    '4': 3, '5': 4, '6': 5,
-    '7': 6, '8': 7, '9': 8,
-    '10': 9, 'J': 10, 'Q': 11,
-    'K': 12
+  const numberWeight = {
+    A: 0,
+    2: 1,
+    3: 2,
+    4: 3,
+    5: 4,
+    6: 5,
+    7: 6,
+    8: 7,
+    9: 8,
+    10: 9,
+    J: 10,
+    Q: 11,
+    K: 12,
   };
-  colorWeight = {
-    '♣': 0, '♦': 13,
-    '♥': 26, '♠': 39,
+  const colorWeight = {
+    '♣': 0,
+    '♦': 13,
+    '♥': 26,
+    '♠': 39,
   };
-  if (value.length == 3) {
-    let number = value.slice(0, 2);
-    let color = value[2];
-    return numberWeight[number] + colorWeight[color];
-  } else {
-    let number = value[0]
-    let color = value[1];
+  if (value.length === 3) {
+    const number = value.slice(0, 2);
+    const color = value[2];
     return numberWeight[number] + colorWeight[color];
   }
+  const number = value[0];
+  const color = value[1];
+  return numberWeight[number] + colorWeight[color];
 }
-
 
 module.exports = {
   concatenateStrings,

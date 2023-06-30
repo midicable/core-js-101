@@ -61,12 +61,10 @@ function getPowerFunction(exponent) {
  */
 function getPolynom(...args) {
   return args.length
-    ? (x) =>
-        args.reduce(
-          (total, current, index) =>
-            total + current * x ** (args.length - index - 1),
-          0
-        )
+    ? (x) => args.reduce(
+      (total, current, index) => total + current * x ** (args.length - index - 1),
+      0,
+    )
     : null;
 }
 
@@ -112,7 +110,7 @@ function memoize(func) {
  */
 function retry(func, attempts) {
   let attempt = 0;
-  const retryFunc = function () {
+  function retryFunc() {
     while (attempt < attempts) {
       try {
         return func();
@@ -122,7 +120,7 @@ function retry(func, attempts) {
       }
     }
     return attempt;
-  };
+  }
   return retryFunc;
 }
 
@@ -152,8 +150,8 @@ function retry(func, attempts) {
 function logger(func, logFunc) {
   return (...args) => {
     const argsList = [];
-    for (const arg of args) {
-      argsList.push(JSON.stringify(arg));
+    for (let i = 0; i < args.length; i += 1) {
+      argsList.push(JSON.stringify(args[i]));
     }
     logFunc(`${func.name}(${argsList.join(',')}) starts`);
     const result = func(...args);
@@ -199,7 +197,11 @@ function partialUsingArguments(fn, ...args1) {
  */
 function getIdGeneratorFunction(startFrom) {
   let currentInteger = startFrom;
-  return () => currentInteger++;
+  return () => {
+    const currentNumber = currentInteger;
+    currentInteger += 1;
+    return currentNumber;
+  };
 }
 
 module.exports = {

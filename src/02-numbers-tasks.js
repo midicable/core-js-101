@@ -7,7 +7,6 @@
  *                                                                                           *
  ******************************************************************************************* */
 
-
 /**
  * Returns an area of a rectangle given by width and height.
  *
@@ -22,7 +21,6 @@
 function getRectangleArea(width, height) {
   return width * height;
 }
-
 
 /**
  * Returns a circumference of circle given by radius.
@@ -52,7 +50,7 @@ function getCircleCircumference(radius) {
  *  -3, 3  => 0
  */
 function getAverage(value1, value2) {
-  return (BigInt(value1) + BigInt(value2)) / 2n;
+  return value1 / 2 + value2 / 2;
 }
 
 /**
@@ -71,7 +69,7 @@ function getAverage(value1, value2) {
  *   (-5,0) (10,-10) => 18.027756377319946
  */
 function getDistanceBetweenPoints(x1, y1, x2, y2) {
-  return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+  return Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
 }
 
 /**
@@ -89,7 +87,6 @@ function getDistanceBetweenPoints(x1, y1, x2, y2) {
 function getLinearEquationRoot(a, b) {
   return -b / a;
 }
-
 
 /**
  * Returns an angle (in radians) between two vectors given by xi and yi,
@@ -111,9 +108,9 @@ function getLinearEquationRoot(a, b) {
  */
 
 function getAngleBetweenVectors(x1, y1, x2, y2) {
-  let scalarProduct = x1 * x2 + y1 * y2;
-  let v1Magnitude = Math.sqrt(Math.pow(x1, 2) + Math.pow(y1, 2));
-  let v2Magnitude = Math.sqrt(Math.pow(x2, 2) + Math.pow(y2, 2));
+  const scalarProduct = x1 * x2 + y1 * y2;
+  const v1Magnitude = Math.sqrt(x1 ** 2 + y1 ** 2);
+  const v2Magnitude = Math.sqrt(x2 ** 2 + y2 ** 2);
   return Math.acos(scalarProduct / (v1Magnitude * v2Magnitude));
 }
 
@@ -132,7 +129,6 @@ function getAngleBetweenVectors(x1, y1, x2, y2) {
 function getLastDigit(value) {
   return value % 10;
 }
-
 
 /**
  * Returns a number by given string representation.
@@ -163,9 +159,8 @@ function parseNumberFromString(value) {
  *   1,2,3   => 3.741657386773941
  */
 function getParallelepipedDiagonal(a, b, c) {
-  return Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2) + Math.pow(c, 2))
+  return Math.sqrt(a ** 2 + b ** 2 + c ** 2);
 }
-
 
 /**
  * Returns the number rounded to specified power of 10.
@@ -185,12 +180,13 @@ function getParallelepipedDiagonal(a, b, c) {
  *   1678, 3  => 2000
  */
 function roundToPowerOfTen(num, pow) {
-  let roundedNum = Math.floor(num / Math.pow(10, pow));
-  let remainder = num % Math.pow(10, pow);
-  if (remainder >= 5 * Math.pow(10, pow - 1)) {
+  let roundedNum = Math.floor(num / 10 ** pow);
+  const powerOfTen = 10 ** pow;
+  const remainder = num % powerOfTen;
+  if (remainder >= 5 * 10 ** (pow - 1)) {
     roundedNum += 1;
   }
-  roundedNum *= Math.pow(10, pow);
+  roundedNum *= 10 ** pow;
 
   return roundedNum;
 }
@@ -213,14 +209,14 @@ function roundToPowerOfTen(num, pow) {
  *   17 => true
  */
 function isPrime(n) {
-  let isPrime = true;
-  for (let i = 2; i < n; i++) {
-    if (n % i == 0) {
-      isPrime = false;
+  let isPrimeFlag = true;
+  for (let i = 2; i < n; i += 1) {
+    if (n % i === 0) {
+      isPrimeFlag = false;
       break;
     }
   }
-  return isPrime;
+  return isPrimeFlag;
 }
 
 /**
@@ -239,12 +235,11 @@ function isPrime(n) {
  *   toNumber(new Number(42), 0) => 42
  */
 function toNumber(value, def) {
-  let num = Number(value);
-  if (isNaN(num)) {
+  const num = Number(value);
+  if (Number.isNaN(num)) {
     return def;
-  } else {
-    return num;
   }
+  return num;
 }
 
 module.exports = {

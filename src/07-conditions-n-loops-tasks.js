@@ -143,8 +143,8 @@ function doRectanglesOverlap(rect1, rect2) {
   };
 
   return (
-    Math.abs(rect1Center.x - rect2Center.x) < (rect1.width + rect2.width) / 2 &&
-    Math.abs(rect1Center.y - rect2Center.y) < (rect1.height + rect2.height) / 2
+    Math.abs(rect1Center.x - rect2Center.x) < (rect1.width + rect2.width) / 2
+    && Math.abs(rect1Center.y - rect2Center.y) < (rect1.height + rect2.height) / 2
   );
 }
 
@@ -177,7 +177,7 @@ function doRectanglesOverlap(rect1, rect2) {
 function isInsideCircle(circle, point) {
   const { center, radius } = circle;
   const distance = Math.sqrt(
-    (center.x - point.x) ** 2 + (center.y - point.y) ** 2
+    (center.x - point.x) ** 2 + (center.y - point.y) ** 2,
   );
 
   return distance < radius;
@@ -527,8 +527,8 @@ function getMatrixProduct(m1, m2) {
  */
 function isAllElementsEqual(array) {
   return (
-    array.filter((element) => element === array[0]).length === array.length &&
-    array[0] !== undefined
+    array.filter((element) => element === array[0]).length === array.length
+    && array[0] !== undefined
   );
 }
 
@@ -585,10 +585,10 @@ function scanSecondaryDiag(position) {
 
 function evaluateTicTacToePosition(position) {
   return (
-    scanCols(position) ||
-    scanRows(position) ||
-    scanMainDiag(position) ||
-    scanSecondaryDiag(position)
+    scanCols(position)
+    || scanRows(position)
+    || scanMainDiag(position)
+    || scanSecondaryDiag(position)
   );
 }
 

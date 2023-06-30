@@ -134,11 +134,11 @@ class Selector {
       );
     }
     if (
-      this._id ||
-      this._class.length ||
-      this._attr.length ||
-      this._pseudoClass.length ||
-      this._pseudoElement
+      this._id
+      || this._class.length
+      || this._attr.length
+      || this._pseudoClass.length
+      || this._pseudoElement
     ) {
       throw new Error(
         'Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element'
@@ -155,10 +155,10 @@ class Selector {
       );
     }
     if (
-      this._class.length ||
-      this._attr.length ||
-      this._pseudoClass.length ||
-      this._pseudoElement
+      this._class.length
+      || this._attr.length
+      || this._pseudoClass.length
+      || this._pseudoElement
     ) {
       throw new Error(
         'Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element'
